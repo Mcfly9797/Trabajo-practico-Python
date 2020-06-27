@@ -1,10 +1,14 @@
 
 ##Validacion id recorrida listas
-def valido_id(id,lista_buques)
+def valido_id(id,buques)
     flag = False
-    for i in lista_buques():
-        if id==lista_buques[i].[1]: ##REVISAR
-            flag =True
+    if len(buques)>0:                                                                       #Valido que no sea una lista vacia
+        for i in lista_buques():
+            if id==lista_buques[i].[1]: ##REVISAR                                           #Recorro lista para buscar id repetido
+                flag =True
+    else:                                                                                   #Si la lista esta vacia el id ingresado no es repetido
+        flag =True
+
     return flag
 
 ##Valido que cereal sea soja o girasol
@@ -32,38 +36,36 @@ def valido_calidad(calidad):                                                    
 
 
 ##Funcion que recepciona y orquesta la validacion de los datos ingresados, el valor id se ingresa previamente para validar si es nulo antes de ingresar a esta funcion
-def ingreso_dat_buque(lista_buques,id_buque):
+def ingreso_dat_buque(buques,id_buque):
 
     while !valido_id_repetido(id_buque,lista_buques):                                       #Valido que no se repita id
         id_buque = str(input("Ingreso un buque repetido, vuelva a intentar:"))              
     
-
     tipo_cereal = str(input("Escriba 'Soja' o 'Girasol' dependiendo del tipo de cereal:"))  
     while !valido_cereal(tipo_cereal)                                                       #Valido que sea del tipo solicitado
-        tipo_cereal = str(input("Ingreso valor erroneo, vuelva a intentar:"))               
-    
-
-    
+        tipo_cereal = str(input("Ingreso valor erroneo, vuelva a intentar:"))
     
     peso = int(input("Ingrese el peso del cereal en kg: "))
     while !valido_positivo(peso)                                                            #Valido que el peso sea un valor positivo
         peso = int(input("Ingreso valor negativo. Vuelva a intentar: "))    
     
-    
-    
-    
     calidad = float(input("Ingrese calidad de cereales entre 0.5 y 1: "))
     while !valido_calidad(calidad)                                                          #Valido que el rango de calidad sea correcto
-        calidad = int(input("Ingreso calidad erronea. Vuelva a intentar: "))    
+        calidad = int(input("Ingreso calidad erronea. Vuelva a intentar: "))   
 
 
-
-
+    print("El id del buque es {}, el tipo de cereal es {}, el peso del cereal es {}Kg y el coeficiente de calidad es {}".format (id_buque ,cereal ,peso,calidad))
+    
+    
     nodo_buque = id_buque,tipo_cereal,peso,calidad                                          #Una vez validados todos los datos, creo un nodo y lo devuelvo para agregarlo a la lista
 
     return nodo_buque
 
-#Datos generales semanales
+#Flujo principal de programa
+def main()
+
+
+# Inicio programa solicito datos generales semanales
 input dolar
 valido
 input precio girasol
@@ -71,27 +73,21 @@ valido
 input precio soja
 valido
 
+buques = [ ]                                                                             #Inicializo lista de buques vacia para su posterior carga
+
+id_buque = int(input('Ingrese id del buque. Finaliza al ingresar valor vacio'))          #Solicito por unica vez id de buque previo a ingresar al programa
+
+    while id_buque != '':                                                                #Espero datos de buque hasta que se ingrese un valor vacio
+        #inicializo acumuladores
+        buques.append(ingreso_dat_buque(buques,id_buque))
+        #calculo costo operativo
+        #realizo comparaciones de maximos solicitado        
 
 
-inicializo lista de buques
 
-mientras el id buque ingresado no sea nulo entro a la funcion
-    #Datos por buque seran solicitados hasta que el buque ingresado este "" (vacion)
-    input idbuque
-    valido id no repetido recorriendo lista de buques
-    input tipo_cereal
-    valido si es "soja" "girasol"
-    input peso
-    valido que sea positivo
-    input calidad
-    valido que tenga un rango entre 0.5 y 1
+print ('Carga finalizada')
 
-inicializo acumuladores
-calculo costo operativo
-realizo comparaciones de maximos solicitado
-
-
-Al finalizar carga semanal imprimo los datos solicitados
+#Al finalizar carga semanal imprimo los datos solicitados
 
 
 
