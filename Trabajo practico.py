@@ -62,11 +62,11 @@ def ingreso_dat_buque(buques,id_buque):
 
 
     print("El id del buque es {}, el tipo de cereal es {}, el peso del cereal es {}Kg y el coeficiente de calidad es {}".format (id_buque ,cereal ,peso,calidad))
-    
-    
+        
     nodo_buque = id_buque,tipo_cereal,peso,calidad                                          #Una vez validados todos los datos, creo un nodo y lo devuelvo para agregarlo a la lista
 
     return nodo_buque
+
 
 
 def ingreso_dat_generales
@@ -85,7 +85,7 @@ def ingreso_dat_generales
         precio_soja = int(input("Ingreso valor negativo. Vuelva a intentar: "))
 
     nodo_dat_gen = dolar,precio_grsl,precio_soja                                               #Creo y doy valor a la tupla que devolvera los datos
-    return
+    return nodo_dat_gen
 
 
 
