@@ -8,6 +8,12 @@ def valido_id(id,lista_buques)
     return flag
 
 
+def valido_cereal(tipo_cereal):
+    flag = False
+        if tipo_cereal == "Soja" or tipo_cereal == "Girasol"                                #Valido si el valor ingresado no coincide con los tipos de cereales 
+            flag True   
+    return flag
+
 #Validacion de valores positivos, en este caso solo se tendra en cuenta este tipo de validacion
 def es_positivo(valor)
     flag = False
@@ -16,13 +22,12 @@ def es_positivo(valor)
 
     return Flag
 
-def valido_cereal(tipo_cereal):
+def valido_calidad(calidad):                                                                #Recibo un valor
     flag = False
-        if tipo_cereal == "Soja" or tipo_cereal == "Girasol"                                #Valido si el valor ingresado no coincide con los tipos de cereales 
-            flag True   
+    if calidad >= 0.5 and calidad <= 1:                                                     #Valido que el numero ingresado sea mayor que cero.
+        flag=True
+
     return flag
-
-
 
 
 #Datos generales semanales
