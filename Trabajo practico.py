@@ -7,6 +7,12 @@ def es_positivo(valor)
 
     return Flag
 
+def valido_cereal(tipo_cereal):
+    flag = False
+        if tipo_cereal == "Soja" or tipo_cereal == "Girasol"                                #Valido si el valor ingresado no coincide con los tipos de cereales 
+            flag True   
+    return flag
+
 #Datos generales semanales
 input dolar
 valido
