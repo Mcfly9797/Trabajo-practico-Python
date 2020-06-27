@@ -1,4 +1,13 @@
 
+##Validacion id recorrida listas
+def valido_id(id,lista_buques)
+    flag = False
+    for i in lista_buques():
+        if id==lista_buques[i].[1]: ##REVISAR
+            flag =True
+    return flag
+
+
 #Validacion de valores positivos, en este caso solo se tendra en cuenta este tipo de validacion
 def es_positivo(valor)
     flag = False
@@ -12,6 +21,9 @@ def valido_cereal(tipo_cereal):
         if tipo_cereal == "Soja" or tipo_cereal == "Girasol"                                #Valido si el valor ingresado no coincide con los tipos de cereales 
             flag True   
     return flag
+
+
+
 
 #Datos generales semanales
 input dolar
