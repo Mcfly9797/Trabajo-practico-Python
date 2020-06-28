@@ -62,9 +62,8 @@ def ingreso_dat_buque(buques,id):
 
     print("El id del buque es {}, el tipo de cereal es {}, el peso del cereal es {}Kg y el coeficiente de calidad es {}".format (id,cereal,peso,calidad))
         
-    nodo_buque = id,tipo_cereal,peso,calidad                                          #Una vez validados todos los datos, creo un nodo y lo devuelvo para agregarlo a la lista
 
-    return nodo_buque
+    return id,tipo_cereal,peso,calidad
 
 
 
@@ -83,9 +82,8 @@ def ingreso_dat_sem():
     while !es_positivo(precio_soja)                                                          #Valido que el peso sea un valor positivo
         precio_soja = int(input("Ingreso valor negativo. Vuelva a intentar: "))
 
-    nodo_dat_sem = dolar,precio_grsl,precio_soja                                             #Creo y doy valor a la tupla que devolvera los datos
     
-    return nodo_dat_sem
+    return dolar,precio_grsl,precio_soja
 
 
 def calculo_facturacion(valor_dolar, precio_grsl, precio_soja, peso, calidad, tipo_cereal):
@@ -124,18 +122,17 @@ embarques_totales = 0
 
 buques_id = [ ]                                                                       #Inicializo lista de ID de buques vacia para su posterior carga
 
-
-# Solicito datos generales semanales
-dat_sem = ingreso_dat_sem()
+dolar,precio_grsl,precio_soja = ingreso_dat_sem()                                     # Solicito datos generales semanales
 
 id = int(input('Ingrese id del buque. Finaliza al ingresar un valor vacio'))          #Solicito por unica vez id de buque previo a ingresar al programa
     while id != '':                                                                   #Espero datos de buque hasta que se ingrese un valor vacio
-        buque_dat = ingreso_dat_buque(buques,id)                                      #Recibo tupla con los datos del buque actual
+        id,tipo_cereal,peso,calidad = ingreso_dat_buque(buques,id)                                      #Recibo tupla con los datos del buque actual
+        
         buques_id.append(buque_dat[1])                                                #Agrego el id al listado de ids, la posicion 1 es la posicion del id en las tuplas
         
-        calculo_facturacion(dat_sem[1], )                                            #Realizo el calculo de costos operativos
+        calculo_facturacion(dolar, precio_grsl, precio_soja, peso, calidad, tipo_cereal )                                            #Realizo el calculo de costos operativos
         
-        
+        (valor_dolar, precio_grsl, precio_soja, peso, calidad, tipo_cereal)
         #calculo costo operativo
         #realizo comparaciones de maximos solicitado        
 
