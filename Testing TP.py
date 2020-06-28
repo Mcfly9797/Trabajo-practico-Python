@@ -1,0 +1,1 @@
+calculo_costo_operativo(100, 20, 2000000, 0.5, "girasol")
