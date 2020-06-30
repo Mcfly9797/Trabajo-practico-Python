@@ -9,9 +9,9 @@ def ingreso_dat_buque(id, buques_id):
     while tipo_cereal in ['girasol','soja'] ==False:  # Valido que sea del tipo solicitado
         tipo_cereal = str(input("Ingreso valor erroneo, vuelva a intentar:")).lower()
 
-    peso = float(input("Ingrese el peso del cereal en kg: "))/1000            
+    peso = (float(input("Ingrese el peso del cereal en kg: "))/1000)         
     while peso<0:                                                                       # Valido que el peso sea un valor positivo
-        peso = float(input("Ingreso valor negativo. Vuelva a intentar: "))/1000 
+        peso = (float(input("Ingreso valor negativo. Vuelva a intentar: "))/1000) 
 
     calidad = float(input("Ingrese calidad de cereales entre 0.5 y 1: "))
     # Valido que el rango de calidad sea correcto
@@ -28,12 +28,12 @@ def ingreso_dat_sem():
         dolar = float(input("Ingreso valor negativo. Vuelva a intentar: "))
 
     precio_grsl = float(input("Ingrese el precio del girasol: "))
-    # Valido que el peso sea un valor positivo
+
     while precio_grsl<0:
         precio_grsl = float(input("Ingreso valor negativo. Vuelva a intentar: "))
 
     precio_soja = float(input("Ingrese el precio de la soja: "))
-    # Valido que el peso sea un valor positivo
+
     while precio_soja<0:
         precio_soja = float(input("Ingreso valor negativo. Vuelva a intentar: "))
 
@@ -44,7 +44,8 @@ def calculo_facturacion(valor_dolar, precio_cereal, peso, calidad, tipo_cereal):
 
 
     # Calculo el monto de facturacion por embarque
-    monto_facturacion = round((precio_cereal * peso * calidad) * (0.0020 + (500 * (peso / 1200) * valor_dolar))) (precio_cereal * peso * calidad) * (0.0020 + (500 * (peso / 1200) * valor_dolar))
+    monto_facturacion = (round((precio_cereal * peso * calidad) * (0.0020 + (500 * (peso / 1200) * valor_dolar)),2))
+    
     return monto_facturacion
 
 
@@ -88,11 +89,11 @@ def main():
         if tipo_cereal == "girasol":
             precio_cereal = precio_grsl         #Actualizo el precio del cereal actual dependiendo el cereal que ingreso
             embarq_sem_grsl += 1                # Aumento acumuladores de cantidad de cargamentos segun su tipo
-            peso_total_girasol = peso/1000      # Calculo la cantidad total de cereal por tipo acumulado hasta el momento
+            peso_total_girasol = peso      # Calculo la cantidad total de cereal por tipo acumulado hasta el momento
         else:
             precio_cereal = precio_soja 
             embarq_sem_soja += 1
-            peso_total_soja = peso/1000    
+            peso_total_soja = peso   
 
         # Realizo el calculo de monto facturacion
         monto_facturacion = calculo_facturacion(dolar, precio_cereal, peso, calidad, tipo_cereal)
