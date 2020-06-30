@@ -1,21 +1,3 @@
-
-# Validacion de valores positivos, en este caso solo se tendra en cuenta este tipo de validacion
-def es_positivo(valor):
-    flag = False
-    if valor > 0:  # Verifico que el valor no sea negativo
-        flag = True
-    return flag
-
-
-# Valido que la calidad este entre 0.5 y 1
-def valido_calidad(calidad):  # Recibo un valor
-    flag = False
-    # Valido que el numero ingresado sea mayor que cero.
-    if calidad >= 0.5 and calidad <= 1:
-        flag = True
-    return flag
-
-
 # Funcion que recepciona y orquesta la validacion de los datos ingresados, el valor id se ingresa previamente para validar si es nulo antes de ingresar a esta funcion
 def ingreso_dat_buque(id, buques_id):
 
@@ -27,34 +9,33 @@ def ingreso_dat_buque(id, buques_id):
     while tipo_cereal in ['girasol','soja'] ==False:  # Valido que sea del tipo solicitado
         tipo_cereal = str(input("Ingreso valor erroneo, vuelva a intentar:")).lower()
 
-    peso = int(input("Ingrese el peso del cereal en kg: "))
-    while es_positivo(peso) == False:  # Valido que el peso sea un valor positivo
-        peso = int(input("Ingreso valor negativo. Vuelva a intentar: "))
+    peso = float(input("Ingrese el peso del cereal en kg: "))/1000            
+    while peso<0:                                                                       # Valido que el peso sea un valor positivo
+        peso = float(input("Ingreso valor negativo. Vuelva a intentar: "))/1000 
 
     calidad = float(input("Ingrese calidad de cereales entre 0.5 y 1: "))
     # Valido que el rango de calidad sea correcto
-    while valido_calidad(calidad) == False:
+    while calidad <= 0.5 and calidad >= 1:
         calidad = float(input("Ingreso calidad erronea. Vuelva a intentar: "))
 
-    #print("El id del buque es {}, el tipo de cereal es {}, el peso del cereal es {}Kg y el coeficiente de calidad es {}".format (id,tipo_cereal,peso,calidad))
 
     return id, tipo_cereal, peso, calidad
 
 
 def ingreso_dat_sem():
-    dolar = int(input("Ingrese el precio del dolar: "))
-    while es_positivo(dolar) == False:  # Valido que el peso sea un valor positivo
-        dolar = int(input("Ingreso valor negativo. Vuelva a intentar: "))
+    dolar = float(input("Ingrese el precio del dolar: "))
+    while dolar<0:  # Valido que el peso sea un valor positivo
+        dolar = float(input("Ingreso valor negativo. Vuelva a intentar: "))
 
-    precio_grsl = int(input("Ingrese el precio del girasol: "))
+    precio_grsl = float(input("Ingrese el precio del girasol: "))
     # Valido que el peso sea un valor positivo
-    while es_positivo(precio_grsl) == False:
-        precio_grsl = int(input("Ingreso valor negativo. Vuelva a intentar: "))
+    while precio_grsl<0:
+        precio_grsl = float(input("Ingreso valor negativo. Vuelva a intentar: "))
 
-    precio_soja = int(input("Ingrese el precio de la soja: "))
+    precio_soja = float(input("Ingrese el precio de la soja: "))
     # Valido que el peso sea un valor positivo
-    while es_positivo(precio_soja) == False:
-        precio_soja = int(input("Ingreso valor negativo. Vuelva a intentar: "))
+    while precio_soja<0:
+        precio_soja = float(input("Ingreso valor negativo. Vuelva a intentar: "))
 
     return dolar, precio_grsl, precio_soja
 
@@ -62,23 +43,8 @@ def ingreso_dat_sem():
 def calculo_facturacion(valor_dolar, precio_cereal, peso, calidad, tipo_cereal):
 
 
-    #Transformo el peso de los cereales a toneladas
-    peso_tn = peso / 1000
-    print("toneladas:", peso_tn) #debug
-    #Calculo el tiempo de uso de la cinta transportadora (1200 tn/hora)
-    tiempo_cinta = peso_tn / 1200
-    print("tiempo_cinta:", tiempo_cinta) #debug
-    #Calculo valor del cereal (precio del cereal por tn * cantidad * coeficiente calidad)
-    valor_cereal = precio * peso_tn * calidad
-    print("valor_cereal", valor_cereal) #debug
-    #Calculo el monto de facturacion por embarque
-    monto_facturacion = valor_cereal * 0.0020 + (500 * tiempo_cinta * valor_dolar)
-    print("monto facturacion: ", monto_facturacion)
-    #Calculo la cantidad de embarques acumulados por tipo de cereal
-    
     # Calculo el monto de facturacion por embarque
-    monto_facturacion = (precio_cereal * (peso / 1000) * calidad) * (0.0020 + (500 * ((peso / 1000) / 1200) * valor_dolar))
-
+    monto_facturacion = round((precio_cereal * peso * calidad) * (0.0020 + (500 * (peso / 1200) * valor_dolar))) (precio_cereal * peso * calidad) * (0.0020 + (500 * (peso / 1200) * valor_dolar))
     return monto_facturacion
 
 
@@ -107,10 +73,10 @@ def main():
     embarques_totales = 0
 
     buques_id = []  # Inicializo lista de ID de buques vacia para su posterior carga
-
+    print('-------------------------Datos semanales----------------------------------\n')
     # Solicito datos generales semanales
     dolar, precio_grsl, precio_soja = ingreso_dat_sem()
-
+    print('-------------------------Datos de buque-----------------------------------\n')
     # Solicito por unica vez id de buque previo a ingresar al programa
     id = str(input('Ingrese id del buque. Finaliza al ingresar un valor vacio: '))
     while id != '':  # Espero datos de buque hasta que se ingrese un valor vacio
@@ -141,7 +107,7 @@ def main():
         max_facturacion = calc_max(monto_facturacion, max_facturacion)
 
         
-        print('---------------------------------------------------------------------------------------------')
+        print('---------------------------------------------------------------------------------------------\n')
 
         # Vuelvo a pedir el id al ingresar al buque
         id = str(input('Ingrese id del buque. Finaliza al ingresar un valor vacio: '))
