@@ -1,1 +1,4 @@
-calculo_costo_operativo(100, 20, 2000000, 0.5, "girasol")
+import Trabajo practico.py
+
+def tests():
+    valido_id
