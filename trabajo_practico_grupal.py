@@ -1,23 +1,3 @@
-# Validacion id recorrida listas
-def valido_id(id, buques_id):
-    flag = True
-    for i in buques_id:
-        print('id ingresado {} id actual. {}'.format(id, i))
-        if id == i:  # REVISAR                                                  #Recorro lista para buscar id repetido
-            flag = False
-    print('devuelvo un ', flag)
-    return flag
-
-
-# Valido que cereal sea soja o girasol
-def valido_cereal(tipo_cereal):
-    flag = False
-    tipo_cereal = tipo_cereal.lower()
-    # Valido si el valor ingresado no coincide con los tipos de cereales
-    if tipo_cereal == "soja" or tipo_cereal == "girasol":
-        flag = True
-    return flag
-
 
 # Validacion de valores positivos, en este caso solo se tendra en cuenta este tipo de validacion
 def es_positivo(valor):
@@ -38,13 +18,14 @@ def valido_calidad(calidad):  # Recibo un valor
 
 # Funcion que recepciona y orquesta la validacion de los datos ingresados, el valor id se ingresa previamente para validar si es nulo antes de ingresar a esta funcion
 def ingreso_dat_buque(id, buques_id):
-    while (valido_id(id, buques_id) == False):  # Valido que no se repita id
+
+    while id in buques_id:  # Valido que el id ingresado no este repetido entre los que fueron ingresados
         id = str(input("Ingreso un buque repetido, vuelva a intentar:"))
 
-    tipo_cereal = str(
-        input("Escriba 'Soja' o 'Girasol' dependiendo del tipo de cereal:"))
-    while valido_cereal(tipo_cereal) == False:  # Valido que sea del tipo solicitado
-        tipo_cereal = str(input("Ingreso valor erroneo, vuelva a intentar:"))
+    tipo_cereal = str(input("Escriba 'Soja' o 'Girasol' dependiendo del tipo de cereal:")).lower()
+    print ('Ingreso este cereal en minuscula:{}'.format(tipo_cereal))
+    while tipo_cereal in ['girasol','soja'] ==False:  # Valido que sea del tipo solicitado
+        tipo_cereal = str(input("Ingreso valor erroneo, vuelva a intentar:")).lower()
 
     peso = int(input("Ingrese el peso del cereal en kg: "))
     while es_positivo(peso) == False:  # Valido que el peso sea un valor positivo
@@ -78,15 +59,25 @@ def ingreso_dat_sem():
     return dolar, precio_grsl, precio_soja
 
 
-def calculo_facturacion(valor_dolar, precio_grsl, precio_soja, peso, calidad, tipo_cereal):
+def calculo_facturacion(valor_dolar, precio_cereal, peso, calidad, tipo_cereal):
 
-    if tipo_cereal == 'soja':
-        precio_cereal = precio_soja
-    else:
-        precio_cereal = precio_grsl
 
-    monto_facturacion = (precio_cereal * (peso / 1000) * calidad) * (0.0020 + (500 * (
-        (peso / 1000) / 1200) * valor_dolar))  # Calculo el monto de facturacion por embarque
+    #Transformo el peso de los cereales a toneladas
+    peso_tn = peso / 1000
+    print("toneladas:", peso_tn) #debug
+    #Calculo el tiempo de uso de la cinta transportadora (1200 tn/hora)
+    tiempo_cinta = peso_tn / 1200
+    print("tiempo_cinta:", tiempo_cinta) #debug
+    #Calculo valor del cereal (precio del cereal por tn * cantidad * coeficiente calidad)
+    valor_cereal = precio * peso_tn * calidad
+    print("valor_cereal", valor_cereal) #debug
+    #Calculo el monto de facturacion por embarque
+    monto_facturacion = valor_cereal * 0.0020 + (500 * tiempo_cinta * valor_dolar)
+    print("monto facturacion: ", monto_facturacion)
+    #Calculo la cantidad de embarques acumulados por tipo de cereal
+    
+    # Calculo el monto de facturacion por embarque
+    monto_facturacion = (precio_cereal * (peso / 1000) * calidad) * (0.0020 + (500 * ((peso / 1000) / 1200) * valor_dolar))
 
     return monto_facturacion
 
@@ -121,19 +112,27 @@ def main():
     dolar, precio_grsl, precio_soja = ingreso_dat_sem()
 
     # Solicito por unica vez id de buque previo a ingresar al programa
-    id = int(input('Ingrese id del buque. Finaliza al ingresar un valor vacio: '))
+    id = str(input('Ingrese id del buque. Finaliza al ingresar un valor vacio: '))
     while id != '':  # Espero datos de buque hasta que se ingrese un valor vacio
-        id, tipo_cereal, peso, calidad = ingreso_dat_buque(id, buques_id)
 
+        id, tipo_cereal, peso, calidad = ingreso_dat_buque(id, buques_id)
         buques_id.append(id)  # Agrego el id al listado de ids de buque
 
+
+        if tipo_cereal == "girasol":
+            precio_cereal = precio_grsl         #Actualizo el precio del cereal actual dependiendo el cereal que ingreso
+            embarq_sem_grsl += 1                # Aumento acumuladores de cantidad de cargamentos segun su tipo
+            peso_total_girasol = peso/1000      # Calculo la cantidad total de cereal por tipo acumulado hasta el momento
+        else:
+            precio_cereal = precio_soja 
+            embarq_sem_soja += 1
+            peso_total_soja = peso/1000    
+
         # Realizo el calculo de monto facturacion
-        monto_facturacion = calculo_facturacion(
-            dolar, precio_grsl, precio_soja, peso, calidad, tipo_cereal)
+        monto_facturacion = calculo_facturacion(dolar, precio_cereal, peso, calidad, tipo_cereal)
 
         # Impresion monto facturacion por cada embarque
-        print("La facturacion del embarque {} es de {}".format(
-            id, monto_facturacion))
+        print("La facturacion del embarque {} es de {}".format(id, monto_facturacion))
 
         # Sumo esta facturacion al monto total de facturacion semanal
         fact_total_semana += monto_facturacion
@@ -141,26 +140,21 @@ def main():
         # Calculo maximo de facturacion
         max_facturacion = calc_max(monto_facturacion, max_facturacion)
 
-        if tipo_cereal == "girasol":
-            embarq_sem_grsl += 1  # Aumento acumuladores de cantidad de cargamentos segun su tipo
-            # Calculo la cantidad total de cereal por tipo acumulado hasta el momento
-            peso_total_girasol = peso/1000
-        else:
-            embarq_sem_soja += 1
-            peso_total_soja = peso/1000
+        
         print('---------------------------------------------------------------------------------------------')
 
         # Vuelvo a pedir el id al ingresar al buque
-        id = int(input('Ingrese id del buque. Finaliza al ingresar un valor vacio: '))
+        id = str(input('Ingrese id del buque. Finaliza al ingresar un valor vacio: '))
     # Calculo la cantidad total de embarques despachados en la semana sumando los embarques por cada tipo de cereal
     embarques_totales = embarq_sem_grsl + embarq_sem_soja
     print('Carga finalizada')
 
     # Al finalizar carga semanal imprimo los datos solicitados
-    print("Cantidad de embarques soja Embarques totales: {}".format(embarq_sem_soja))
-    print("Cantidad de embarques girasol Embarques totales: {}".format(embarq_sem_grsl))
+    print("Cantidad total de embarques de soja: {}".format(embarq_sem_soja))
+    print("Cantidad total de embarques de girasol: {}".format(embarq_sem_grsl))
     print("Maxima facturacion registrada: {}".format(max_facturacion))
     print("El monto total de facturacion semanal es: ", fact_total_semana)
+    input('Presione cualquier tecla para finalizar')
 
 
 main()

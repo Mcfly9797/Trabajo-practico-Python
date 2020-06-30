@@ -1,4 +1,7 @@
-import Trabajo practico.py
+import trabajo_practico_grupal
 
 def tests():
-    valido_id
+    for i in range (1,100):
+        trabajo_practico_grupal.valido_id(i,i)
+
+tests()
