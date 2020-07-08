@@ -1,12 +1,13 @@
-# Funcion que recepciona y orquesta la validacion de los datos ingresados, el valor id se ingresa previamente para validar si es nulo antes de ingresar a esta funcion
+# Funcion que recepciona y orquesta la validacion de los datos de buque ingresados, el valor id se ingresa previamente para validar si es nulo antes de ingresar a esta funcion
 def ingreso_dat_buque(id, buques_id):
 
     while id in buques_id:  # Valido que el id ingresado no este repetido entre los que fueron ingresados
         id = str(input("Ingreso un buque repetido, vuelva a intentar:"))
 
+
     tipo_cereal = str(input("Escriba 'Soja' o 'Girasol' dependiendo del tipo de cereal:")).lower()
-    print ('Ingreso este cereal en minuscula:{}'.format(tipo_cereal))
-    while tipo_cereal in ['girasol','soja'] ==False:  # Valido que sea del tipo solicitado
+    
+    while tipo_cereal != 'girasol' and tipo_cereal != 'soja':  # Valido que sea del tipo solicitado
         tipo_cereal = str(input("Ingreso valor erroneo, vuelva a intentar:")).lower()
 
     peso = (float(input("Ingrese el peso del cereal en kg: "))/1000)         
@@ -15,13 +16,13 @@ def ingreso_dat_buque(id, buques_id):
 
     calidad = float(input("Ingrese calidad de cereales entre 0.5 y 1: "))
     # Valido que el rango de calidad sea correcto
-    while calidad <= 0.5 and calidad >= 1:
+    while calidad < 0.5 or calidad > 1:
         calidad = float(input("Ingreso calidad erronea. Vuelva a intentar: "))
 
 
     return id, tipo_cereal, peso, calidad
 
-
+#Recepciona y valida los datos semanales sobre cotizaciones
 def ingreso_dat_sem():
     dolar = float(input("Ingrese el precio del dolar: "))
     while dolar<0:  # Valido que el peso sea un valor positivo
@@ -66,14 +67,10 @@ def main():
     max_facturacion = 0
     peso_total_soja = 0
     peso_total_girasol = 0
-    fact_total_semana = 0
-    peso_tn = 0
-    tiempo_cinta = 0
     monto_facturacion = 0
-    valor_cereal = 0
     embarques_totales = 0
 
-    buques_id = []  # Inicializo lista de ID de buques vacia para su posterior carga
+    buques_id = []                                                                                                          # Inicializo lista de ID de buques vacia para su posterior carga
     print('-------------------------Datos semanales----------------------------------\n')
     # Solicito datos generales semanales
     dolar, precio_grsl, precio_soja = ingreso_dat_sem()
@@ -89,11 +86,11 @@ def main():
         if tipo_cereal == "girasol":
             precio_cereal = precio_grsl         #Actualizo el precio del cereal actual dependiendo el cereal que ingreso
             embarq_sem_grsl += 1                # Aumento acumuladores de cantidad de cargamentos segun su tipo
-            peso_total_girasol = peso      # Calculo la cantidad total de cereal por tipo acumulado hasta el momento
+            peso_total_girasol += peso      # Calculo la cantidad total de cereal por tipo acumulado hasta el momento
         else:
             precio_cereal = precio_soja 
             embarq_sem_soja += 1
-            peso_total_soja = peso   
+            peso_total_soja += peso   
 
         # Realizo el calculo de monto facturacion
         monto_facturacion = calculo_facturacion(dolar, precio_cereal, peso, calidad, tipo_cereal)
@@ -106,7 +103,6 @@ def main():
 
         # Calculo maximo de facturacion
         max_facturacion = calc_max(monto_facturacion, max_facturacion)
-
         
         print('---------------------------------------------------------------------------------------------\n')
 
@@ -118,9 +114,12 @@ def main():
 
     # Al finalizar carga semanal imprimo los datos solicitados
     print("Cantidad total de embarques de soja: {}".format(embarq_sem_soja))
+    print("La cantidad de cereal transportada de Soja es de: {:.2f} toneladas".format(peso_total_soja))
     print("Cantidad total de embarques de girasol: {}".format(embarq_sem_grsl))
-    print("Maxima facturacion registrada: {}".format(max_facturacion))
-    print("El monto total de facturacion semanal es: ", fact_total_semana)
+    print("La cantidad de cereal transportada de Girasol es de: {:.2f} toneladas".format(peso_total_girasol))
+    print("La máxima facturacion registrada es de: {}".format(max_facturacion))
+    print("El monto total de facturacion semanal es de: {:.2f}".format(fact_total_semana))
+    print("El total de embarques semanales fue de: {} embarques".format(embarques_totales))
     input('Presione cualquier tecla para finalizar')
 
 
